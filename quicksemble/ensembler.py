@@ -3,8 +3,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline, FeatureUnion
 from xgboost.core import XGBoostError
 
-from ensembler.classifier_transformer import ClassifierTransformer
-from ensembler.utils import load_object
+from quicksemble.classifier_transformer import ClassifierTransformer
+from quicksemble.utils import load_object
 
 
 class Ensembler():
