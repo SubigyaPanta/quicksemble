@@ -72,7 +72,6 @@ class Ensembler():
         for i, mdl in enumerate(self.models):
             meta_features.append((mdl.__class__.__name__+str(i), ClassifierTransformer(mdl)))
 
-        print(meta_features)
         self.ensemble = Pipeline(steps=[
             ('base_layer', FeatureUnion(meta_features, n_jobs=n_jobs)),
             ('final_layer', self.meta_model)
@@ -85,8 +84,15 @@ class Ensembler():
         self.compile(n_jobs)
         return self.ensemble.fit(X, y)
 
-
     def predict(self, X):
         return self.ensemble.predict(X)
+
+    def predict_proba(self, X):
+        """
+        Note that this method will only work if meta model has predict_proba
+        :param X:
+        :return: numpy.ndarray
+        """
+        return self.ensemble.predict_proba(X)
 
 
