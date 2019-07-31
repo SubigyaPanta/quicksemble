@@ -3,3 +3,4 @@ build
 dist
 .pytest_cache
 quicksemble.egg-info
+__pycache__

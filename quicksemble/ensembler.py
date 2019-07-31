@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline, FeatureUnion
 from xgboost.core import XGBoostError
 
-from quicksemble.classifier_transformer import ClassifierTransformer
+from quicksemble.classifier_transformer import get_transformer
 from quicksemble.utils import load_object
 
 
@@ -14,13 +14,14 @@ class Ensembler():
     meta model.
     """
 
-    def __init__(self, models:list, modelpaths:list=None, merge_models=False, meta_model=LogisticRegression()):
+    def __init__(self, models:list, modelpaths:list=None, merge_models=False, meta_model=LogisticRegression(), voting='hard'):
         """
 
         :param models: List of trained/untrained Models
         :param modelpath: List of path of trained and saved Models
         :param merge_models: Merge array of saved and not saved models
         :param meta_model: Model for the second layer. Default is Logistic Regression
+        :param voting: 'hard' use prediction values of base layer or 'soft' use predicted probabilities of base layer
         """
         if merge_models:
             assert modelpaths is not None
@@ -37,6 +38,7 @@ class Ensembler():
 
         self.meta_model = meta_model
         self.ensemble = None
+        self.voting = voting
 
     def fit_base(self, X, y, mode='unfitted'):
         """
@@ -70,7 +72,7 @@ class Ensembler():
         """
         meta_features = []
         for i, mdl in enumerate(self.models):
-            meta_features.append((mdl.__class__.__name__+str(i), ClassifierTransformer(mdl)))
+            meta_features.append((mdl.__class__.__name__+str(i), get_transformer(kind=self.voting, clf=mdl)))
 
         self.ensemble = Pipeline(steps=[
             ('base_layer', FeatureUnion(meta_features, n_jobs=n_jobs)),

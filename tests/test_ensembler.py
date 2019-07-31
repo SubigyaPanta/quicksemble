@@ -11,6 +11,10 @@ from quicksemble.ensembler import Ensembler
 
 class TestEnsembler(TestCase):
 
+    def setUp(self):
+        data = load_iris()
+        self.X = data['data']
+        self.Y = data['target']
     def test_object_constructor(self):
         models = [RandomForestClassifier(), XGBClassifier()]
         ensembler1 = Ensembler(models)
@@ -20,36 +24,53 @@ class TestEnsembler(TestCase):
             ensembler2 = Ensembler(models, None, True)
 
     def test_fit_base(self):
-        data = load_iris()
-        X = data['data']
-        Y = data['target']
         models = [RandomForestClassifier(), XGBClassifier()]
         ensembler1 = Ensembler(models)
-        ensembler1.fit_base(X, Y)
+        ensembler1.fit_base(self.X, self.Y)
 
-        p1 = ensembler1.models[0].predict(X)
+        p1 = ensembler1.models[0].predict(self.X)
         self.assertIsInstance(p1, numpy.ndarray)
-        p2 = ensembler1.models[1].predict(X)
+        p2 = ensembler1.models[1].predict(self.X)
         self.assertIsInstance(p2, numpy.ndarray)
 
     def test_compile(self):
-        data = load_iris()
-        X = data['data']
-        Y = data['target']
         models = [RandomForestClassifier(), XGBClassifier()]
         ensembler1 = Ensembler(models)
-        ensembler1.fit_base(X, Y)
+        ensembler1.fit_base(self.X, self.Y)
         ensemble = ensembler1.compile()
         print(ensemble)
 
     def test_fit_predict(self):
-        data = load_iris()
-        X = data['data']
-        Y = data['target']
         models = [RandomForestClassifier(), XGBClassifier()]
         ensembler1 = Ensembler(models)
-        ensembler1.fit(X, Y)
-        pred = ensembler1.predict(X)
+        ensembler1.fit(self.X, self.Y)
+        pred = ensembler1.predict(self.X)
 
-        acs = accuracy_score(Y, pred)
-        print(acs)
+        acs = accuracy_score(self.Y, pred)
+        print('Accuracy Score: ', acs)
+
+    def test_fit_predictproba(self):
+        models = [RandomForestClassifier(), XGBClassifier()]
+        ensembler1 = Ensembler(models, voting='soft')
+        ensembler1.fit(self.X, self.Y)
+        pred = ensembler1.predict(self.X)
+
+        acs = accuracy_score(self.Y, pred)
+        print('Accuracy Score: ', acs)
+
+
+    def test_intermediary_state_features(self):
+        models = [RandomForestClassifier(), XGBClassifier()]
+        ensembler1 = Ensembler(models, voting='hard')
+        ensembler1.fit(self.X, self.Y)
+        meta_features1 = ensembler1.ensemble.named_steps['base_layer'].transform(self.X)
+        print(meta_features1.shape)
+        self.assertEqual(meta_features1.shape[0], self.X.shape[0])
+        self.assertEqual(meta_features1.shape[1], 2)
+
+        ensembler2 = Ensembler(models, voting='soft')
+        ensembler2.fit(self.X, self.Y)
+        meta_features2 = ensembler2.ensemble.named_steps['base_layer'].transform(self.X)
+        print(meta_features2.shape)
+        self.assertEqual(meta_features2.shape[0], self.X.shape[0])
+        self.assertEqual(meta_features2.shape[1], 6)
