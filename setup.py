@@ -15,9 +15,21 @@ setuptools.setup(
     url="https://github.com/SubigyaPanta/quicksemble",
     packages=setuptools.find_packages(exclude=['tests*']),
     classifiers=[
-        'Programming Language :: Python 3',
-        'Licence :: All rights reserved',
+        'Development Status :: 4 - Beta',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent'
     ],
-    install_requires=['numpy', 'scikit-learn', 'xgboost']
+    install_requires=['numpy', 'scikit-learn', 'xgboost'],
+    project_urls={
+            'Bug Reports': 'https://github.com/SubigyaPanta/quicksemble/issues',
+            'Source': 'https://github.com/SubigyaPanta/quicksemble',
+        }
 )
