@@ -20,7 +20,7 @@ models = [
     RandomForestClassifier(random_state=21),
     XGBClassifier(random_state=21)
 ]
-# Default meta classifier is LogisticRegression
+# Default meta classifier is LogisticRegression. Hence it is weighted voting.
 ensemble = Ensembler(models)
 ensemble.fit(X_train, y_train)
 ensemble.predict(X_test)
@@ -67,7 +67,7 @@ models = [
     XGBClassifier(random_state=21)
 ]
 
-# Use Neural Network as meta classifier
+# Use soft voting. 
 ensemble = Ensembler(models, voting='soft')
 ensemble.fit(X_train, y_train)
 ensemble.predict(X_test)
