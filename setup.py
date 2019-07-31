@@ -19,5 +19,5 @@ setuptools.setup(
         'Licence :: All rights reserved',
         'Operating System :: OS Independent'
     ],
-    install_requires=['numpy', 'pandas', 'scikit-learn', 'xgboost']
+    install_requires=['numpy', 'scikit-learn', 'xgboost']
 )
