@@ -15,13 +15,17 @@ class TestEnsembler(TestCase):
         data = load_iris()
         self.X = data['data']
         self.Y = data['target']
+
     def test_object_constructor(self):
         models = [RandomForestClassifier(), XGBClassifier()]
         ensembler1 = Ensembler(models)
         self.assertListEqual(ensembler1.models, models)
 
         with self.assertRaises(AssertionError) as ae:
-            ensembler2 = Ensembler(models, None, True)
+            Ensembler(models, None, True)
+
+        with self.assertRaises(AssertionError) as ae:
+            Ensembler()
 
     def test_fit_base(self):
         models = [RandomForestClassifier(), XGBClassifier()]

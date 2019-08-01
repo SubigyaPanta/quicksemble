@@ -1,10 +1,14 @@
 # Quicksemble
-A simple package to create an ensemble for quick experiments.
+**Quicksemble** is a simple package to create a stacked ensemble for quick 
+experiments. It is developed in [T2P Co., Ltd.](https://www.t2pco.com/)  
 
 ### Dependencies
 1. Numpy `pip install numpy`
 2. Scikit Learn `pip install scikit-learn`
 3. Xgboost `pip install xgboost`
+
+## Installation
+`pip install quicksemble`
 
 ## Basic Usage
 ```python
