@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score
 from xgboost import XGBClassifier
 
 from quicksemble.ensembler import Ensembler
+from quicksemble.utils import save_object
 
 
 class TestEnsembler(TestCase):
@@ -26,6 +27,24 @@ class TestEnsembler(TestCase):
 
         with self.assertRaises(AssertionError) as ae:
             Ensembler()
+
+    def test_saved_constructor(self):
+        rf = RandomForestClassifier()
+        rf.fit(self.X, self.Y)
+        save_object('rf.pkl', rf)
+        xg = XGBClassifier()
+        xg.fit(self.X, self.Y)
+        save_object('xg.pkl', xg)
+
+        es = Ensembler(modelpaths=[
+            'rf.pkl',
+            'xg.pkl'
+        ])
+        es.fit(self.X, self.Y)
+        preds = es.predict(self.X)
+
+        self.assertIsInstance(preds, numpy.ndarray)
+
 
     def test_fit_base(self):
         models = [RandomForestClassifier(), XGBClassifier()]

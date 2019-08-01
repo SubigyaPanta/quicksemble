@@ -87,3 +87,13 @@ ensemble.fit(X_train, y_train)
 # This line will output the values. Note that you need to fit it first.
 ensemble.ensemble.named_steps['base_layer'].transform(X_train)
 ```
+
+For already saved models, use modelpaths. Note that it should be pickled.
+````python
+es = Ensembler(modelpaths=[
+            'rf.pkl',
+            'xg.pkl'
+    ])
+es.fit(X_train, y_train)
+es.predict(X_train)
+````
