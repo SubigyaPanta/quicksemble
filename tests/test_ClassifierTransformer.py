@@ -18,6 +18,13 @@ class TestHardClassifierTransformer(TestCase):
         tx = get_transformer('hard')
         self.assertIsInstance(tx, HardClassifierTransformer)
 
+    def test_fit(self):
+        clf = RandomForestClassifier()
+        clf.fit(self.X, self.Y)
+        tx = get_transformer('hard', clf)
+        fit = tx.fit(self.X, self.Y)
+        self.assertIsInstance(fit, HardClassifierTransformer)
+
     def test_transform(self):
         # When there is no classifier assigned
         tx = get_transformer('hard')
@@ -45,6 +52,13 @@ class TestSoftClassifierTransformer(TestCase):
     def test_get(self):
         tx = get_transformer('soft')
         self.assertIsInstance(tx, SoftClassifierTransformer)
+
+    def test_fit(self):
+        clf = RandomForestClassifier()
+        clf.fit(self.X, self.Y)
+        tx = get_transformer('soft', clf)
+        fit = tx.fit(self.X, self.Y)
+        self.assertIsInstance(fit, SoftClassifierTransformer)
 
     def test_transform(self):
         # When there is no classifier assigned

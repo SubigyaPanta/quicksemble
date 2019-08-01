@@ -42,9 +42,7 @@ class TestEnsembler(TestCase):
         ])
         es.fit(self.X, self.Y)
         preds = es.predict(self.X)
-
         self.assertIsInstance(preds, numpy.ndarray)
-
 
     def test_fit_base(self):
         models = [RandomForestClassifier(), XGBClassifier()]
@@ -80,7 +78,6 @@ class TestEnsembler(TestCase):
 
         acs = accuracy_score(self.Y, pred)
         print('Accuracy Score: ', acs)
-
 
     def test_intermediary_state_features(self):
         models = [RandomForestClassifier(), XGBClassifier()]
