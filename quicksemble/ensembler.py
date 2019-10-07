@@ -98,4 +98,18 @@ class Ensembler():
         """
         return self.ensemble.predict_proba(X)
 
+    def get_params(self, deep=True):
+        """
+        Get the parameters of the ensemble pipeline
+        :param deep:
+        :return:
+        """
+        return self.ensemble.get_params(deep)
 
+    def set_params(self, **kwargs):
+        """
+        To set the parameters of the ensemble pipeline
+        :param kwargs:
+        :return:
+        """
+        return self.ensemble.set_params(**kwargs)
