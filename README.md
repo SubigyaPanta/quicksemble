@@ -1,4 +1,6 @@
 # Quicksemble
+[![Downloads](https://pepy.tech/badge/quicksemble)](https://pepy.tech/project/quicksemble)
+
 **Quicksemble** is a simple package to create a stacked ensemble for quick 
 experiments. It is developed in [T2P Co., Ltd.](https://www.t2pco.com/)  
 

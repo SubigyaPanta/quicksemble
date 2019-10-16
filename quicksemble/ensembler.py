@@ -65,6 +65,14 @@ class Ensembler():
 
         return self.models
 
+    def _get_voting(self, index=None):
+        if isinstance(self.voting, str):
+            return self.voting
+        elif isinstance(self.voting, list):
+            return self.voting[index]
+        else:
+            raise ValueError('Voting can be either string or list of strings')
+
     def compile(self, n_jobs=2) -> Pipeline:
         """
         To Build the ensemble. This method should be called only if all models in base
@@ -73,7 +81,7 @@ class Ensembler():
         """
         meta_features = []
         for i, mdl in enumerate(self.models):
-            meta_features.append((mdl.__class__.__name__+str(i), get_transformer(kind=self.voting, clf=mdl)))
+            meta_features.append((mdl.__class__.__name__+str(i), get_transformer(kind=self._get_voting(i), clf=mdl)))
 
         self.ensemble = Pipeline(steps=[
             ('base_layer', FeatureUnion(meta_features, n_jobs=n_jobs)),
