@@ -14,7 +14,8 @@ class Ensembler():
     meta model.
     """
 
-    def __init__(self, models:list=None, modelpaths:list=None, merge_models=False, meta_model=LogisticRegression(), voting='soft'):
+    def __init__(self, models:list=None, modelpaths:list=None, merge_models=False,
+                 meta_model=LogisticRegression(solver='lbfgs', multi_class='auto'), voting='soft'):
         """
 
         :param models: List of trained/untrained Models

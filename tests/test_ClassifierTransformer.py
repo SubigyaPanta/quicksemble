@@ -19,7 +19,7 @@ class TestHardClassifierTransformer(TestCase):
         self.assertIsInstance(tx, HardClassifierTransformer)
 
     def test_fit(self):
-        clf = RandomForestClassifier()
+        clf = RandomForestClassifier(n_estimators=10)
         clf.fit(self.X, self.Y)
         tx = get_transformer('hard', clf)
         fit = tx.fit(self.X, self.Y)
@@ -32,7 +32,7 @@ class TestHardClassifierTransformer(TestCase):
             tx.transform(self.X)
 
         # When there is a classifier assigned
-        clf = RandomForestClassifier()
+        clf = RandomForestClassifier(n_estimators=10)
         clf.fit(self.X, self.Y)
         tx = get_transformer('hard', clf)
         transformed = tx.transform(self.X)
@@ -54,7 +54,7 @@ class TestSoftClassifierTransformer(TestCase):
         self.assertIsInstance(tx, SoftClassifierTransformer)
 
     def test_fit(self):
-        clf = RandomForestClassifier()
+        clf = RandomForestClassifier(n_estimators=10)
         clf.fit(self.X, self.Y)
         tx = get_transformer('soft', clf)
         fit = tx.fit(self.X, self.Y)
@@ -67,7 +67,7 @@ class TestSoftClassifierTransformer(TestCase):
             tx.transform(self.X)
 
         # When there is a classifier assigned
-        clf = RandomForestClassifier()
+        clf = RandomForestClassifier(n_estimators=10)
         clf.fit(self.X, self.Y)
         tx = get_transformer('soft', clf)
         transformed = tx.transform(self.X)

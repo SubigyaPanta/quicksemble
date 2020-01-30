@@ -6,7 +6,7 @@ with open('README.md', 'r') as handle:
 
 setuptools.setup(
     name='quicksemble',
-    version='0.2.6',
+    version='0.2.7',
     author='Subigya Jyoti Panta',
     author_email='subigya@t2pco.com',
     description='A package to build ensemble for quick experiments.',
