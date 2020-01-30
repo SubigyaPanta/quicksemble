@@ -121,3 +121,6 @@ class Ensembler():
         :return:
         """
         return self.ensemble.set_params(**kwargs)
+
+    def __getattr__(self, item):
+        return getattr(self.ensemble, item)
