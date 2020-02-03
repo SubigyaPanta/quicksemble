@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 from xgboost import XGBClassifier
 
 from quicksemble.ensembler import Ensembler
-from quicksemble.utils import save_object
+from quicksemble.utils import save_object, load_object
 
 
 class TestEnsembler(TestCase):
@@ -102,3 +102,14 @@ class TestEnsembler(TestCase):
 
         est_type = getattr(ensembler1, "_estimator_type")
         self.assertEqual(est_type, 'classifier')
+
+
+    def test_load_saved_ensemble(self):
+        models = [RandomForestClassifier(n_estimators=10), XGBClassifier()]
+        ensembler1 = Ensembler(models)
+        ensembler1.fit(self.X, self.Y)
+        save_object('ensembler1.pkl', ensembler1)
+
+        # try loading
+        ens1 = load_object('ensembler1.pkl')
+        self.assertIsInstance(ens1, Ensembler)

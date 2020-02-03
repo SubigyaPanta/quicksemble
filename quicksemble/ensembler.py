@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.exceptions import NotFittedError
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline, FeatureUnion
@@ -15,7 +16,8 @@ class Ensembler():
     """
 
     def __init__(self, models:list=None, modelpaths:list=None, merge_models=False,
-                 meta_model=LogisticRegression(solver='lbfgs', multi_class='auto'), voting='soft'):
+                 meta_model=LogisticRegression(solver='lbfgs', multi_class='auto'), voting='soft',
+                 estimator_type='classifier'):
         """
 
         :param models: List of trained/untrained Models
@@ -23,6 +25,7 @@ class Ensembler():
         :param merge_models: Merge array of saved and not saved models
         :param meta_model: Model for the second layer. Default is Logistic Regression
         :param voting: 'hard' use prediction values of base layer or 'soft' use predicted probabilities of base layer
+        :param estimator_type: 'classifier' or 'regressor'
         """
         assert models or modelpaths, 'You should pass either model instances or saved model paths.'
         if merge_models:
@@ -41,6 +44,7 @@ class Ensembler():
         self.meta_model = meta_model
         self.ensemble = None
         self.voting = voting
+        self._estimator_type = estimator_type
 
     def fit_base(self, X, y, mode='unfitted'):
         """
@@ -92,6 +96,7 @@ class Ensembler():
         return self.ensemble
 
     def fit(self, X, y, mode='unfitted', n_jobs=2):
+        self.classes_ = np.unique(y)
         self.fit_base(X, y, mode)
         self.compile(n_jobs)
         return self.ensemble.fit(X, y)
@@ -122,6 +127,3 @@ class Ensembler():
         :return:
         """
         return self.ensemble.set_params(**kwargs)
-
-    def __getattr__(self, item):
-        return getattr(self.ensemble, item)
